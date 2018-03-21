@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/LetterCanvas.dart';
+import 'package:flutter_app/WordBox.dart';
 
 void main() {
   return runApp(
@@ -41,12 +43,12 @@ class _AnagramState extends State<Anagram> {
           ),
           child: new Column(
 
+//            mainAxisSize: MainAxisSize.min,
             children: <Widget>[
               new LetterCanvas.fromString(widget.word.word1),
               new WordBox(widget.word.getLetterCount()),
               new WordBox(widget.word.getLetterCount())
             ],
-            mainAxisAlignment: MainAxisAlignment.end,
 
           ),
 
@@ -55,63 +57,8 @@ class _AnagramState extends State<Anagram> {
   }
 }
 
-class WordBox extends StatefulWidget {
 
-  final int _letterCount;
 
-  WordBox(this._letterCount);
-
-  @override
-  _WordBoxState createState() => new _WordBoxState();
-}
-
-class _WordBoxState extends State<WordBox> {
-  @override
-  Widget build(BuildContext context) {
-    return new Container(
-        padding: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 20.0),
-        child: new Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-
-            children: new List.generate(widget._letterCount, (int index) {
-              return new Container(
-                margin: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: new Placeholder(
-                  fallbackHeight: 10.0,
-                  fallbackWidth: 10.0,
-                ),
-                constraints: new BoxConstraints(
-                    minHeight: 40.0, minWidth: 40.0),
-              );
-            }))
-    );
-  }
-}
-
-class LetterCanvas extends StatefulWidget {
-
-  LetterCanvas(this._letters);
-
-  LetterCanvas.fromString(String string) : _letters = string.runes.toList();
-
-  final List<int> _letters;
-
-  @override
-  _LetterCanvasState createState() => new _LetterCanvasState();
-}
-
-class _LetterCanvasState extends State<LetterCanvas> {
-  @override
-  Widget build(BuildContext context) {
-    return new ListView.builder(
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        itemBuilder: (context, index) {
-
-        },
-      itemCount: widget._letters.length,
-    );
-  }
-}
 
 
 
