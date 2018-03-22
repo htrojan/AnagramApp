@@ -47,7 +47,9 @@ class _AnagramState extends State<Anagram> {
 
             children: <Widget>[
               new Expanded(
-                child: new LetterCanvas.fromString(widget.word.word1),
+                child: new LetterCanvas.fromString(widget.word.word1, (content){
+                  debugPrint(new String.fromCharCode(content) + ' Pressed');
+                }),
               ),
               new WordBox(widget.word.getLetterCount()),
               new WordBox(widget.word.getLetterCount())
