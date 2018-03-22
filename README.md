@@ -1,8 +1,5 @@
-# flutter_app
+[![Build Status](https://travis-ci.com/lobbi44/AnagramApp.svg?token=9vwubEsyYtoVAmXUwizk&branch=master)](https://travis-ci.com/lobbi44/AnagramApp)
+## AnnAgram
 
-A new Flutter application.
+A guessing app for anagrams
 
-## Getting Started
-
-For help getting started with Flutter, view our online
-[documentation](https://flutter.io/).
