@@ -24,12 +24,17 @@ class _LetterCanvasState extends State<LetterCanvas> {
     int alreadyUsed = 0;
 
     return new List.generate(rowCount, (index) {
-      final int num = (index == rowCount) ? (maxUsed - alreadyUsed) : (rnd.nextInt(maxPerRow) + 1);
-      debugPrint('Created Row');
+      final int num = (index == rowCount-1) ? (maxUsed - alreadyUsed) : (rnd.nextInt(maxPerRow) + 1);
       var row = new Row(
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: widget._letters.skip(alreadyUsed).take(num).map((rune) {
           return new Container(
-            child: new Text(new String.fromCharCode(rune)),
+            child: new Text(
+                new String.fromCharCode(rune),
+              style: new TextStyle(
+                fontSize: 80.0
+              ),
+            ),
           );
         }).toList(),
       );
@@ -42,6 +47,7 @@ class _LetterCanvasState extends State<LetterCanvas> {
   @override
   Widget build(BuildContext context) {
     return new Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10.0, vertical: 5.0),
       child: new Column(
         children: _generateRandomLayout(3)
       ),
