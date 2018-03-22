@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class LetterCanvas extends StatefulWidget {
@@ -13,17 +15,36 @@ class LetterCanvas extends StatefulWidget {
 }
 
 class _LetterCanvasState extends State<LetterCanvas> {
+
+
+  List<Widget> _generateRandomLayout(final int rowCount) {
+    final int maxUsed = widget._letters.length;
+    final int maxPerRow = (maxUsed / rowCount).round() + 1;
+    var rnd = new Random();
+    int alreadyUsed = 0;
+
+    return new List.generate(rowCount, (index) {
+      final int num = (index == rowCount) ? (maxUsed - alreadyUsed) : (rnd.nextInt(maxPerRow) + 1);
+      debugPrint('Created Row');
+      var row = new Row(
+        children: widget._letters.skip(alreadyUsed).take(num).map((rune) {
+          return new Container(
+            child: new Text(new String.fromCharCode(rune)),
+          );
+        }).toList(),
+      );
+
+      alreadyUsed += num;
+      return row;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return new ListView.builder(
-      shrinkWrap: true,
-      padding: const EdgeInsets.symmetric(horizontal: 10.0),
-      itemBuilder: (context, index) {
-        return new Container(
-          child: new Text(widget._letters[index].toString()),
-        );
-      },
-      itemCount: widget._letters.length,
+    return new Container(
+      child: new Column(
+        children: _generateRandomLayout(3)
+      ),
     );
   }
 }

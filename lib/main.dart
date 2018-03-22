@@ -44,8 +44,12 @@ class _AnagramState extends State<Anagram> {
           child: new Column(
 
 //            mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.end,
+//            crossAxisAlignment: CrossAxisAlignment.center,
             children: <Widget>[
-              new LetterCanvas.fromString(widget.word.word1),
+              new Expanded(
+                child: new Center(child: new LetterCanvas.fromString(widget.word.word1)),
+              ),
               new WordBox(widget.word.getLetterCount()),
               new WordBox(widget.word.getLetterCount())
             ],
