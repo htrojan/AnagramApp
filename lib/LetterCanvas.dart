@@ -22,15 +22,19 @@ class LetterCanvas extends StatefulWidget {
 }
 
 class _LetterCanvasState extends State<LetterCanvas> {
-
+  
+  
   final Random _rnd = new Random();
   final int _maxRnd = 3;
   final List<Color> _rndColors = [Colors.yellow, Colors.amber, Colors.red];
-
+  Set<int> _indexesDeactivated = new Set();
+  
   List<Widget> _generateRandomLayout(final int rowCount) {
+    
     final int maxUsed = widget._letters.length;
     final int maxPerRow = (maxUsed / rowCount).round() + 1;
     int alreadyUsed = 0;
+    
 
     return new List.generate(rowCount, (index) {
       int num = (index == rowCount - 1) ? (maxUsed - alreadyUsed) : (_rnd
@@ -38,13 +42,17 @@ class _LetterCanvasState extends State<LetterCanvas> {
       if (num > maxUsed - alreadyUsed) {
         num = 0;
       }
+      int currentIndex = alreadyUsed -1;
       var row = new Expanded(
         child: new Row(
 
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: widget._letters.skip(alreadyUsed).take(num).map((rune) {
+            currentIndex++;
             return new GestureDetector(
               onTap: (){
+                _indexesDeactivated.add(currentIndex);
+                debugPrint(currentIndex.toString() + ' was added to pressed buttons');
                 widget._callback(rune);
               },
               child: new LetterBox(
