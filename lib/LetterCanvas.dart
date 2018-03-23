@@ -26,11 +26,11 @@ class _LetterCanvasState extends State<LetterCanvas> {
   
   
   final Random _rnd = new Random();
-  final int _maxRnd = 3;
   final List<Color> _rndColors = [Colors.yellow, Colors.amber, Colors.red];
-  Set<int> _indexesDeactivated = new Set();
+  Set<int> _indexesDeactivated;
+  List<Color> _colors;
 
-  List<int> _boxesPerRow = new List();
+  List<int> _boxesPerRow;
 
   @override
   void initState(){
@@ -48,6 +48,22 @@ class _LetterCanvasState extends State<LetterCanvas> {
 
       return num;
     });
+
+    _indexesDeactivated = new Set();
+
+    //Now fill the _color list
+    _colors = new List();
+    _rndColors.forEach((color){
+      _colors.addAll(new List.filled(maxPerRow, color));
+    });
+    _colors.shuffle();
+  }
+
+  void _disableIndex(int index){
+    setState((){
+      _indexesDeactivated.add(index);
+      debugPrint((index).toString() + ' was added to pressed buttons');
+    });
   }
 
   List<Widget> _generateRandomLayout() {
@@ -62,15 +78,17 @@ class _LetterCanvasState extends State<LetterCanvas> {
               currentIndex++; //A 'custom' made index to keep track of each letter
               //As it is incremented before the return statement, all variables inside the return statement
               //have to use currentIndex-1
+              final i = currentIndex-1;
               return new GestureDetector(
+
                 onTap: () {
-                  _indexesDeactivated.add(currentIndex-1);
-                  debugPrint((currentIndex-1).toString() +
-                      ' was added to pressed buttons');
+                  _disableIndex(i);
+
+
                   widget._callback(rune);
                 },
                 child: new LetterBox(
-                  _rndColors[_rnd.nextInt(_maxRnd)],
+                  (_indexesDeactivated.contains(i)) ? Colors.grey :_colors[i],
                   new String.fromCharCode(rune).toUpperCase(),
                 ),
               );
