@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_app/LetterBox.dart';
 
 typedef void LetterCallback(int letter);
 
@@ -46,24 +47,9 @@ class _LetterCanvasState extends State<LetterCanvas> {
               onTap: (){
                 widget._callback(rune);
               },
-              child: new Container(
-                constraints: const BoxConstraints.tightFor(
-                    height: 90.0, width: 90.0),
-                decoration: new BoxDecoration(
-                  border: new Border.all(width: 5.0),
-                  color: _rndColors[_rnd.nextInt(_maxRnd)],
-                ),
-
-                child: new Center(
-                  child: new Text(
-                    new String.fromCharCode(rune).toUpperCase(),
-                    style: new TextStyle(
-                      fontSize: 80.0,
-
-                    ),
-
-                  ),
-                ),
+              child: new LetterBox(
+                _rndColors[_rnd.nextInt(_maxRnd)],
+                new String.fromCharCode(rune).toUpperCase(),
               ),
             );
           }).toList(),

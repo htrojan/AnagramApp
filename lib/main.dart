@@ -52,7 +52,7 @@ class _AnagramState extends State<Anagram> {
                 }),
               ),
               new WordBox(widget.word.getLetterCount()),
-              new WordBox(widget.word.getLetterCount())
+              new WordBox.withContent(widget.word.getLetterCount(), ['T'])
             ],
 
           ),

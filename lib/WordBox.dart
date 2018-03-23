@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/LetterBox.dart';
 
 class WordBox extends StatefulWidget {
   final int _letterCount;
+  final List<String> _content;
 
-  WordBox(this._letterCount);
+  WordBox(this._letterCount) : _content = [];
+  WordBox.withContent(this._letterCount, this._content);
 
   @override
   _WordBoxState createState() => new _WordBoxState();
@@ -22,8 +25,8 @@ class _WordBoxState extends State<WordBox> {
                 padding: const EdgeInsets.all(5.0),
                 child: new AspectRatio(
                   aspectRatio: 1.0,
-                  child: new Placeholder(
-                  ),
+                  child: (widget._content.length > index) ?
+                  new LetterBox(Colors.yellow, widget._content[index].toUpperCase(), fontsize: 50.0,) : new Placeholder(),
                 ),
               ));
         })
