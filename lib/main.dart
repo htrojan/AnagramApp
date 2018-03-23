@@ -30,6 +30,20 @@ class Anagram extends StatefulWidget {
 }
 
 class _AnagramState extends State<Anagram> {
+  List<LetterEntry> _currentSelection;
+
+  @override
+  void initState(){
+    super.initState();
+
+    _currentSelection = new List();
+  }
+
+  void _addToSelection(String s, Color color){
+    setState((){
+      _currentSelection.add(new LetterEntry(color, s));
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -47,12 +61,14 @@ class _AnagramState extends State<Anagram> {
 
             children: <Widget>[
               new Expanded(
-                child: new LetterCanvas.fromString(widget.word.word1, (content){
+                child: new LetterCanvas(widget.word.word1, (content, color){
                   debugPrint(new String.fromCharCode(content) + ' Pressed');
+                  _addToSelection(new String.fromCharCode(content).toUpperCase(), color);
                 }),
+                  key: new ObjectKey(widget.word.word1),
               ),
-              new WordBox(widget.word.getLetterCount()),
-              new WordBox.withContent(widget.word.getLetterCount(), ['T'])
+              new WordBox.fullEntry(widget.word.getLetterCount(), _currentSelection),
+              new WordBox.fullEntry(widget.word.getLetterCount(), [const LetterEntry(Colors.yellow, 'T')])
             ],
 
           ),

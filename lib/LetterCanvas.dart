@@ -3,23 +3,19 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/LetterBox.dart';
 
-typedef void LetterCallback(int letter);
+typedef void LetterCallback(int letter, Color letterColor);
 
 
 class LetterCanvas extends StatefulWidget {
 
-  LetterCanvas(this._letters, this._callback);
+  LetterCanvas(this.word, this._callback);
 
-  LetterCanvas.fromString(String string, this._callback) : _letters = string.runes.toList(){
-    _letters.shuffle();
-  }
-
-  final List<int> _letters;
   final LetterCallback _callback;
   final int _rowCount = 3;
+  final String word;
 
   @override
-  _LetterCanvasState createState() => new _LetterCanvasState();
+  _LetterCanvasState createState() => new _LetterCanvasState(word);
 }
 
 class _LetterCanvasState extends State<LetterCanvas> {
@@ -31,11 +27,19 @@ class _LetterCanvasState extends State<LetterCanvas> {
   List<Color> _colors;
 
   List<int> _boxesPerRow;
+  final List<int> _letters;
+
+  _LetterCanvasState(String word) : _letters = word.runes.toList(){
+    debugPrint('Constructor was called');
+  }
 
   @override
   void initState(){
+    debugPrint('initState() was called');
     super.initState();
-    final int maxUsed = widget._letters.length;
+    _letters.shuffle(_rnd);
+
+    final int maxUsed = _letters.length;
     final int maxPerRow = (maxUsed / widget._rowCount).round() + 1;
     int alreadyUsed = 0;
 
@@ -74,7 +78,7 @@ class _LetterCanvasState extends State<LetterCanvas> {
       return new Expanded(
           child: new Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: widget._letters.skip(currentIndex).take(rowCount).map((rune){
+            children: _letters.skip(currentIndex).take(rowCount).map((rune){
               currentIndex++; //A 'custom' made index to keep track of each letter
               //As it is incremented before the return statement, all variables inside the return statement
               //have to use currentIndex-1
@@ -82,8 +86,11 @@ class _LetterCanvasState extends State<LetterCanvas> {
               return new GestureDetector(
 
                 onTap: () {
+                  if(_indexesDeactivated.contains(i))
+                    return;
+
                   _disableIndex(i);
-                  widget._callback(rune);
+                  widget._callback(rune, _colors[i]);
                 },
                 child: new LetterBox(
                   (_indexesDeactivated.contains(i)) ? Colors.grey :_colors[i],
