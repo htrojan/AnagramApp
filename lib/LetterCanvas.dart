@@ -40,7 +40,7 @@ class _LetterCanvasState extends State<LetterCanvas> {
     int alreadyUsed = 0;
 
     _boxesPerRow = new List.generate(widget._rowCount, (index){
-      int num = (index == widget._rowCount) ? (maxUsed - alreadyUsed) : (_rnd
+      int num = (index == widget._rowCount-1) ? (maxUsed - alreadyUsed) : (_rnd
           .nextInt(maxPerRow) + 1);
       if (num > maxUsed - alreadyUsed) {
         num = 0;
@@ -83,8 +83,6 @@ class _LetterCanvasState extends State<LetterCanvas> {
 
                 onTap: () {
                   _disableIndex(i);
-
-
                   widget._callback(rune);
                 },
                 child: new LetterBox(
