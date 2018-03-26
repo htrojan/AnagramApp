@@ -6,24 +6,32 @@ void main() {
   return runApp(
       new MaterialApp(
         title: 'AnnAgram',
-        home: new Anagram(new AnagramData('Ampel', 'Lampe')),
+        home: new Anagram(new AnagramData(['Ampel', 'Lampe'], 5)),
+        theme: new ThemeData(primaryColor: Colors.amberAccent)
       )
   );
 }
 
 class AnagramData {
+  //TODO: Fix case sensitivity!
+  AnagramData(this.words, this.letterCount){
+    assert(words.length >= 2);
+    assert(words.every((word) => word.length == letterCount));
+  }
 
-  AnagramData(this.word1, this.word2);
+  final int letterCount;
+  final List<String> words;
 
-  final String word1, word2;
+  int getLetterCount() => letterCount;
+  int getNumberOfWords() => words.length;
 
-  int getLetterCount() => word1.length;
+  bool containsWord(String word)=> words.contains(word);
 }
 
 class Anagram extends StatefulWidget {
-  Anagram(this.word);
+  Anagram(this.anagram);
 
-  final AnagramData word;
+  final AnagramData anagram;
 
   @override
   _AnagramState createState() => new _AnagramState();
@@ -61,15 +69,17 @@ class _AnagramState extends State<Anagram> {
 
             children: <Widget>[
               new Expanded(
-                child: new LetterCanvas(widget.word.word1, (content, color){
+                child: new LetterCanvas(widget.anagram.words[0], (content, color){
                   debugPrint(new String.fromCharCode(content) + ' Pressed');
                   _addToSelection(new String.fromCharCode(content).toUpperCase(), color);
                 }),
-                  key: new ObjectKey(widget.word.word1),
-              ),
-              new WordBox.fullEntry(widget.word.getLetterCount(), _currentSelection),
-              new WordBox.fullEntry(widget.word.getLetterCount(), [const LetterEntry(Colors.yellow, 'T')])
-            ],
+                  key: new ObjectKey(widget.anagram.words[0]),
+              )
+
+            ]..addAll(new List<Widget>.generate(widget.anagram.words.length, (index){
+              debugPrint('Wordbox added!');
+              return new WordBox.fullEntry(widget.anagram.getLetterCount(), _currentSelection);
+            })),
 
           ),
 

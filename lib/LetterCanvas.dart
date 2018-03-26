@@ -29,9 +29,7 @@ class _LetterCanvasState extends State<LetterCanvas> {
   List<int> _boxesPerRow;
   final List<int> _letters;
 
-  _LetterCanvasState(String word) : _letters = word.runes.toList(){
-    debugPrint('Constructor was called');
-  }
+  _LetterCanvasState(String word) : _letters = word.runes.toList();
 
   @override
   void initState(){
@@ -58,7 +56,7 @@ class _LetterCanvasState extends State<LetterCanvas> {
     //Now fill the _color list
     _colors = new List();
     _rndColors.forEach((color){
-      _colors.addAll(new List.filled(maxPerRow, color));
+      _colors.addAll(new List.filled(maxPerRow-1, color));
     });
     _colors.shuffle();
   }
