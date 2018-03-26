@@ -60,6 +60,7 @@ class _AnagramState extends State<Anagram> {
     setState(() {
       _guessedWords =
       new List.filled(widget.anagram.getNumberOfWords(), new List());
+      _guessCounter = 0;
     });
   }
 
