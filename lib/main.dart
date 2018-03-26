@@ -5,27 +5,28 @@ import 'package:flutter_app/WordBox.dart';
 void main() {
   return runApp(
       new MaterialApp(
-        title: 'AnnAgram',
-        home: new Anagram(new AnagramData(['Ampel', 'Lampe'], 5)),
-        theme: new ThemeData(primaryColor: Colors.amberAccent)
+          title: 'AnnAgram',
+          home: new Anagram(new AnagramData(['Ampel', 'Lampe', 'Palme'], 5)),
+          theme: new ThemeData(primaryColor: Colors.amberAccent)
       )
   );
 }
 
 class AnagramData {
-  //TODO: Fix case sensitivity!
-  AnagramData(this.words, this.letterCount){
+  ///All letters and words are stored in uppercase internally
+  AnagramData(this.words, this.letterCount) {
     assert(words.length >= 2);
     assert(words.every((word) => word.length == letterCount));
+    words = words.map((entry) => entry.toUpperCase()).toList();
+    debugPrint(words[0]);
   }
 
   final int letterCount;
-  final List<String> words;
+  List<String> words;
 
-  int getLetterCount() => letterCount;
   int getNumberOfWords() => words.length;
 
-  bool containsWord(String word)=> words.contains(word);
+  bool containsWord(String word) => words.contains(word);
 }
 
 class Anagram extends StatefulWidget {
@@ -39,18 +40,66 @@ class Anagram extends StatefulWidget {
 
 class _AnagramState extends State<Anagram> {
   List<LetterEntry> _currentSelection;
+  List<List<LetterEntry>> _guessedWords;
+  int _guessCounter;
+  Key _pageKey = new UniqueKey();
 
   @override
-  void initState(){
+  void initState() {
     super.initState();
-
+    _guessedWords =
+    new List.filled(widget.anagram.getNumberOfWords(), new List());
     _currentSelection = new List();
+    _guessCounter = 0;
   }
 
-  void _addToSelection(String s, Color color){
-    setState((){
+  void _addToSelection(String s, Color color) {
+    setState(() {
       _currentSelection.add(new LetterEntry(color, s));
     });
+  }
+
+  void _clearAllSelections() {
+    setState(() {
+      _currentSelection = new List();
+      _pageKey = new UniqueKey();
+    });
+  }
+
+  void _clearGuessedWords(){
+    setState((){
+      _guessedWords = new List.filled(widget.anagram.getNumberOfWords(), new List());
+    });
+  }
+
+  bool _nextIsLastWord() =>
+      _guessCounter + 1 == widget.anagram.getNumberOfWords();
+
+  /// Do only call this method if all letters have been typed!
+  void _validateSelection() {
+    debugPrint('Validating anagram attempt');
+    assert(_currentSelection.length == widget.anagram.letterCount);
+    final String word = _currentSelection.map((entry) => entry.letter).join();
+    debugPrint('Checking for word: ' + word);
+
+    if (widget.anagram.containsWord(word)) {
+      debugPrint('Anagram valid');
+      setState(() {
+        if(_nextIsLastWord()){
+          debugPrint('Riddle solved!');
+          _clearGuessedWords();
+        }else{
+          _guessedWords[_guessCounter] = _currentSelection;
+        }
+
+        _guessCounter++;
+        _clearAllSelections();
+      });
+    }
+    else {
+      debugPrint('Anagram wrong');
+      _clearAllSelections();
+    }
   }
 
   @override
@@ -65,24 +114,31 @@ class _AnagramState extends State<Anagram> {
           ),
           child: new Column(
 
-          mainAxisAlignment: MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.end,
 
             children: <Widget>[
               new Expanded(
-                child: new LetterCanvas(widget.anagram.words[0], (content, color){
+                child: new LetterCanvas(
+                  widget.anagram.words[0], (content, color) {
                   debugPrint(new String.fromCharCode(content) + ' Pressed');
-                  _addToSelection(new String.fromCharCode(content).toUpperCase(), color);
-                }),
-                  key: new ObjectKey(widget.anagram.words[0]),
+                  _addToSelection(
+                      new String.fromCharCode(content).toUpperCase(), color);
+                  //Now check for
+                  if (_currentSelection.length == widget.anagram.letterCount)
+                    _validateSelection();
+                },
+                  key: _pageKey,),
               )
-
-            ]..addAll(new List<Widget>.generate(widget.anagram.words.length, (index){
-              debugPrint('Wordbox added!');
-              return new WordBox.fullEntry(widget.anagram.getLetterCount(), _currentSelection);
-            })),
-
+            ]
+              ..addAll(new List<Widget>.generate(
+                  widget.anagram.words.length, (index) {
+                return (index == 0) ?
+                new WordBox.fullEntry(
+                    widget.anagram.letterCount, _currentSelection) :
+                new WordBox.fullEntry(
+                    widget.anagram.letterCount, _guessedWords[index - 1]);
+              })),
           ),
-
         )
     );
   }

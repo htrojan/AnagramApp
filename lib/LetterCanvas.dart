@@ -8,7 +8,7 @@ typedef void LetterCallback(int letter, Color letterColor);
 
 class LetterCanvas extends StatefulWidget {
 
-  LetterCanvas(this.word, this._callback);
+  LetterCanvas(this.word, this._callback, {Key key}) : super(key: key);
 
   final LetterCallback _callback;
   final int _rowCount = 3;
@@ -108,5 +108,11 @@ class _LetterCanvasState extends State<LetterCanvas> {
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
         children: _generateRandomLayout()
     );
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    debugPrint('LetterCanvas disposed!');
   }
 }
