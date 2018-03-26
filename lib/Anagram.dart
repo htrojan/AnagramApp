@@ -63,6 +63,11 @@ class _AnagramState extends State<Anagram> {
     });
   }
 
+  void _clearEverything(){
+    _clearGuessedWords();
+    _clearAllSelections();
+  }
+
   bool _nextIsLastWord() =>
       _guessCounter + 1 == widget.anagram.getNumberOfWords();
 
@@ -98,6 +103,13 @@ class _AnagramState extends State<Anagram> {
     return new Scaffold(
         appBar: new AppBar(
           title: new Text('Finde das Anagram'),
+          actions: <Widget>[
+            new IconButton(
+                onPressed: _clearEverything,
+                icon:  new Icon(Icons.refresh),
+                iconSize: 50.0,
+            )
+          ],
         ),
         body: new Padding(
           padding: new EdgeInsets.symmetric(
