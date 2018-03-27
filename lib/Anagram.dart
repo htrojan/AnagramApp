@@ -64,7 +64,7 @@ class _AnagramState extends State<Anagram> {
     });
   }
 
-  void _clearEverything(){
+  void _clearEverything() {
     _clearGuessedWords();
     _clearAllSelections();
   }
@@ -81,17 +81,16 @@ class _AnagramState extends State<Anagram> {
 
     if (widget.anagram.containsWord(word)) {
       debugPrint('Anagram valid');
-      setState(() {
-        if (_nextIsLastWord()) {
-          debugPrint('Riddle solved!');
-          _clearGuessedWords();
-        } else {
-          _guessedWords[_guessCounter] = _currentSelection;
-        }
 
-        _guessCounter++;
-        _clearAllSelections();
-      });
+      if (_nextIsLastWord()) {
+        debugPrint('Riddle solved!');
+        _clearGuessedWords();
+      } else {
+        _guessedWords[_guessCounter] = _currentSelection;
+      }
+
+      _guessCounter++;
+      _clearAllSelections();
     }
     else {
       debugPrint('Anagram wrong');
@@ -106,9 +105,9 @@ class _AnagramState extends State<Anagram> {
           title: new Text('Finde das Anagram'),
           actions: <Widget>[
             new IconButton(
-                onPressed: _clearEverything,
-                icon:  new Icon(Icons.refresh),
-                iconSize: 50.0,
+              onPressed: _clearEverything,
+              icon: new Icon(Icons.refresh),
+              iconSize: 50.0,
             )
           ],
         ),
