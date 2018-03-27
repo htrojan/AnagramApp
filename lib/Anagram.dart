@@ -96,8 +96,7 @@ class _AnagramState extends State<Anagram> {
 
       _guessCounter++;
       _clearAllSelections();
-    }
-    else {
+    } else {
       debugPrint('Anagram wrong');
       _clearAllSelections();
     }
@@ -106,28 +105,25 @@ class _AnagramState extends State<Anagram> {
   @override
   Widget build(BuildContext context) {
     return new Scaffold(
-        appBar: new AppBar(
-          title: new Text('Finde das Anagram'),
-          actions: <Widget>[
-            new IconButton(
-              onPressed: _clearEverything,
-              icon: new Icon(Icons.refresh),
-              iconSize: 50.0,
-            )
-          ],
-        ),
-        body: new Padding(
-          padding: new EdgeInsets.symmetric(
-              vertical: 10.0
+      appBar: new AppBar(
+        title: new Text('Finde das Anagram'),
+        actions: <Widget>[
+          new IconButton(
+            onPressed: _clearEverything,
+            icon: new Icon(Icons.refresh),
+            iconSize: 50.0,
           ),
-          child: new Column(
-
-            mainAxisAlignment: MainAxisAlignment.end,
-
-            children: <Widget>[
-              new Expanded(
-                child: new LetterCanvas(
-                  widget.anagram.words[0], (content, color) {
+        ],
+      ),
+      body: new Padding(
+        padding: new EdgeInsets.symmetric(vertical: 10.0),
+        child: new Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: <Widget>[
+            new Expanded(
+              child: new LetterCanvas(
+                widget.anagram.words[0],
+                    (content, color) {
                   debugPrint(new String.fromCharCode(content) + ' Pressed');
                   _addToSelection(
                       new String.fromCharCode(content).toUpperCase(), color);
@@ -135,19 +131,21 @@ class _AnagramState extends State<Anagram> {
                   if (_currentSelection.length == widget.anagram.letterCount)
                     _validateSelection();
                 },
-                  key: _pageKey,),
-              )
-            ]
-              ..addAll(new List<Widget>.generate(
-                  widget.anagram.words.length, (index) {
-                return (index == 0) ?
-                new WordBox.fullEntry(
-                    widget.anagram.letterCount, _currentSelection) :
-                new WordBox.fullEntry(
-                    widget.anagram.letterCount, _guessedWordsView[index - 1]);
-              })),
-          ),
-        )
+                key: _pageKey,
+              ),
+            )
+          ]
+            ..addAll(
+              new List<Widget>.generate(widget.anagram.words.length, (index) {
+                return (index == 0)
+                    ? new WordBox.fullEntry(
+                    widget.anagram.letterCount, _currentSelection)
+                    : new WordBox.fullEntry(widget.anagram.letterCount,
+                    _guessedWordsView[index - 1]);
+              }),
+            ),
+        ),
+      ),
     );
   }
 }
