@@ -30,17 +30,19 @@ class Anagram extends StatefulWidget {
 
 class _AnagramState extends State<Anagram> {
   List<LetterEntry> _currentSelection;
-  List<List<LetterEntry>> _guessedWords;
+  List<List<LetterEntry>> _guessedWordsView;
+  Set<String> _guessedWords;
   int _guessCounter;
   Key _pageKey = new UniqueKey();
 
   @override
   void initState() {
     super.initState();
-    _guessedWords =
+    _guessedWordsView =
     new List.filled(widget.anagram.getNumberOfWords(), new List());
     _currentSelection = new List();
     _guessCounter = 0;
+    _guessedWords = new Set();
   }
 
   void _addToSelection(String s, Color color) {
@@ -58,9 +60,10 @@ class _AnagramState extends State<Anagram> {
 
   void _clearGuessedWords() {
     setState(() {
-      _guessedWords =
+      _guessedWordsView =
       new List.filled(widget.anagram.getNumberOfWords(), new List());
       _guessCounter = 0;
+      _guessedWords = new Set();
     });
   }
 
@@ -79,14 +82,16 @@ class _AnagramState extends State<Anagram> {
     final String word = _currentSelection.map((entry) => entry.letter).join();
     debugPrint('Checking for word: ' + word);
 
-    if (widget.anagram.containsWord(word)) {
+    if (widget.anagram.containsWord(word) && !_guessedWords.contains(word)) {
       debugPrint('Anagram valid');
+
+      _guessedWords.add(word);
 
       if (_nextIsLastWord()) {
         debugPrint('Riddle solved!');
         _clearGuessedWords();
       } else {
-        _guessedWords[_guessCounter] = _currentSelection;
+        _guessedWordsView[_guessCounter] = _currentSelection;
       }
 
       _guessCounter++;
@@ -139,7 +144,7 @@ class _AnagramState extends State<Anagram> {
                 new WordBox.fullEntry(
                     widget.anagram.letterCount, _currentSelection) :
                 new WordBox.fullEntry(
-                    widget.anagram.letterCount, _guessedWords[index - 1]);
+                    widget.anagram.letterCount, _guessedWordsView[index - 1]);
               })),
           ),
         )
