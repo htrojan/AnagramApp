@@ -7,7 +7,7 @@ class LetterBox extends StatelessWidget {
   final String _text;
   final double fontsize;
 
-  LetterBox(this._color, this._text, {this.fontsize = 80.0});
+  const LetterBox(this._color, this._text, {this.fontsize = 80.0});
 
 
   @override
