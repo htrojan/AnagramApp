@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/Anagram.dart';
+import 'package:flutter_app/anagram.dart';
 
 void main() {
   return runApp(

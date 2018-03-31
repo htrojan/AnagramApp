@@ -1,4 +1,4 @@
-import 'package:flutter_app/Anagram.dart';
+import 'package:flutter_app/anagram.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {

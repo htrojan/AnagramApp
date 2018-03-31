@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/AnagramValidationException.dart';
-import 'package:flutter_app/HashAlgorithms.dart';
-import 'package:flutter_app/LetterCanvas.dart';
-import 'package:flutter_app/WordBox.dart';
+import 'package:flutter_app/anagram_validation_exception.dart';
+import 'package:flutter_app/hash_algorithms.dart';
+import 'package:flutter_app/letter_canvas.dart';
+import 'package:flutter_app/word_box.dart';
 
 class AnagramData {
   ///All letters and words are stored in uppercase internally

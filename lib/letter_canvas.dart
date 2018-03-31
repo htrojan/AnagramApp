@@ -1,7 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/LetterBox.dart';
+import 'package:flutter_app/letter_box.dart';
 
 typedef void LetterCallback(int letter, Color letterColor);
 
