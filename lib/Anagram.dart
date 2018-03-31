@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/AnagramValidationException.dart';
+import 'package:flutter_app/HashAlgorithms.dart';
 import 'package:flutter_app/LetterCanvas.dart';
 import 'package:flutter_app/WordBox.dart';
 
@@ -7,8 +9,16 @@ class AnagramData {
   AnagramData(this.words, this.letterCount) {
     assert(words.length >= 2);
     assert(words.every((word) => word.length == letterCount));
+
+    var hash = compressAnagram(words[0]);
+    List error = words.skip(1).where((element) =>
+    compressAnagram(element) != hash).toList(growable: false);
+    if (error.isNotEmpty) {
+      throw new AnagramValidationException(
+          error.join(', ') + " do not match " + words[0]);
+    }
+
     words = words.map((entry) => entry.toUpperCase()).toList();
-    debugPrint(words[0]);
   }
 
   final int letterCount;

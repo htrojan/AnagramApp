@@ -35,10 +35,14 @@ void main() {
         await tester.pumpWidget(new StatefulBuilder(
           builder: (BuildContext context, StateSetter setState) {
             return new MaterialApp(
-                home: new WordBox.fullEntry(
-                    10,
-                    new List.filled(
-                        letterCount, const LetterEntry(Colors.orange, 'T'))));
+              home: new WordBox.fullEntry(
+                10,
+                new List.filled(
+                  letterCount,
+                  const LetterEntry(Colors.orange, 'T'),
+                ),
+              ),
+            );
           },
         ));
 
