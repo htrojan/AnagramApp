@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/anagram_validation_exception.dart';
-import 'package:flutter_app/hash_algorithms.dart';
-import 'package:flutter_app/letter_canvas.dart';
-import 'package:flutter_app/word_box.dart';
+import 'package:AnnagramApp/anagram_validation_exception.dart';
+import 'package:AnnagramApp/hash_algorithms.dart';
+import 'package:AnnagramApp/letter_canvas.dart';
+import 'package:AnnagramApp/word_box.dart';
+
 
 class AnagramData {
   ///All letters and words are stored in uppercase internally
@@ -29,8 +30,8 @@ class AnagramData {
   bool containsWord(String word) => words.contains(word);
 }
 
-class Anagram extends StatefulWidget {
-  Anagram(this.anagram);
+class AnagramWidget extends StatefulWidget {
+  AnagramWidget(this.anagram);
 
   final AnagramData anagram;
 
@@ -38,7 +39,7 @@ class Anagram extends StatefulWidget {
   _AnagramState createState() => new _AnagramState();
 }
 
-class _AnagramState extends State<Anagram> {
+class _AnagramState extends State<AnagramWidget> {
   List<LetterEntry> _currentSelection;
   List<List<LetterEntry>> _guessedWordsView;
   Set<String> _guessedWords;

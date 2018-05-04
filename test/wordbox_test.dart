@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/letter_box.dart';
-import 'package:flutter_app/word_box.dart';
+import 'package:AnnagramApp/letter_box.dart';
+import 'package:AnnagramApp/word_box.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 Widget testWidgetHelper(Widget widget) {

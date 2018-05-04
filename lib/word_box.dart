@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/letter_box.dart';
+import 'package:AnnagramApp/letter_box.dart';
 
 class LetterEntry {
   final Color color;
